@@ -29,8 +29,12 @@
   "dependencies": {
     "@rollup/plugin-typescript": "^9.0.1",
     "google-spreadsheet": "^3.2.0",
-    "mapbox-gl": "^2.7.0",
+    "mapbox-gl": "^2.10.0",
+    "maplibre-gl": "^2.4.0",
+    "rollup-plugin-inline-svg": "^3.0.3",
     "sirv-cli": "^2.0.0",
+    "svelte-loading-spinners": "^0.3.4",
+    "tslib": "^2.4.0",
     "underscore": "^1.13.2",
     "vis-timeline": "^7.5.0"
   }
