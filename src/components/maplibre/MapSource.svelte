@@ -62,7 +62,6 @@
 		let layerdef;
 		
   	if (type == "geojson") {
-		console.log('data', data);
 	  	if (data) {
 		  	layerdef = {
 	  		  type,

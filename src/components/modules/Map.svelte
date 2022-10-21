@@ -24,7 +24,7 @@
   const source = getMapSource("main");
   let geojson;
   $: geojson = getDatasFromStore(Object.values($media_store_filtered));
-  if(geojson) {
+  if(geojson && geojson.type === "geojson") {
     geojson.data.features.push({
     'id': 0, 
     'type':'Feature', 
@@ -36,8 +36,9 @@
       'label': 'test',
      },
     });
+    console.log("geojson",geojson)
   }
-  console.log("geojson",geojson)
+
   // State
 	let zoom;
 	let center = {};

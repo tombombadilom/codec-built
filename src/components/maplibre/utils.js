@@ -38,7 +38,7 @@ export const getMapSource = (source) => {
     "data": {
       "type": "FeatureCollection",
       "features": [
-        {"id": 1, "type": "point", "geometry": [0,0,0] },
+        {"id": 1, "type": "Feature" },
       ],
     }
   }
