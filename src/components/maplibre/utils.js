@@ -1,12 +1,18 @@
 
 // return geojson feature layer
-export const getDatasFromStore= (store) => {
+export const getDatasFromStore= (store, center) => {
   if(store && store.length > 0) {
     let points = store.filter((m,i) => (m.long && m.lat));
     let geojson = {
       "type": "geojson",
       "data": {
         "type" : "FeatureCollection", 
+        'crs': {
+          'type': 'name',
+          'properties': {
+            'name': 'EPSG:3857',
+          },
+        },
         "features" : []
       },
     };
@@ -16,7 +22,7 @@ export const getDatasFromStore= (store) => {
         "type": "Feature",
         "id": p.id, 
         "geometry": {
-          "type": "point", 
+          "type": "Point", 
           "coordinates": [p.long,p.lat], 
           "properties": {
             "filetype": p["File Type"],
@@ -28,6 +34,43 @@ export const getDatasFromStore= (store) => {
         }
       }
     )); 
+    geojson.data.features.push({
+      "type": "Feature",
+        "id": 0, 
+        "geometry": {
+          "type": "Point", 
+          "coordinates": center, 
+          "properties": { 
+            "label":"test",
+            "id": 0
+          } 
+        }
+    },
+    {
+      'type': 'Feature',
+      'geometry': {
+        'type': 'LineString',
+        'coordinates': [
+          [4e6, -2e6],
+          [8e6, 2e6],
+        ],
+      },
+    },
+    {
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Polygon',
+        'coordinates': [
+          [
+            [-5e6, -1e6],
+            [-3e6, -1e6],
+            [-4e6, 1e6],
+            [-5e6, -1e6],
+          ],
+        ],
+      },
+    },
+    )
     console.log('geojson', geojson);
     return geojson;
   }

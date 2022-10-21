@@ -1,7 +1,6 @@
 <script>
 	import { setContext, createEventDispatcher, onMount, onDestroy } from "svelte";
 	import maplibre from "maplibre-gl";
-
 	const dispatch = createEventDispatcher();
 
 	export let map;
@@ -105,7 +104,7 @@
 			if (customMarker) {
 				let img = new Image(20,20)
 				img.onload = ()=> map.addImage('custom-marker', img)
-				img.src = "./icons/map-marker.png";
+				img.src = "/icons/map-marker.png";
 			}
 
 			dispatch("load", {

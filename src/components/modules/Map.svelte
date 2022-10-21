@@ -6,8 +6,8 @@
 	import MapLayer from '../maplibre/MapLayer.svelte';
 	import MapTooltip from '../maplibre/MapTooltip.svelte';
   // import Marker from '../maplibre/Marker.svelte';
-  import icon from "../maplibre/map-marker.svg"
-  import {getDatasFromStore, getMapSource} from '../maplibre/utils';
+
+  import { getDatasFromStore, getMapSource } from '../maplibre/utils';
   import { throttle } from "underscore";
   import { watchResize } from "svelte-watch-resize";
   import {
@@ -23,21 +23,7 @@
   let data;
   const source = getMapSource("main");
   let geojson;
-  $: geojson = getDatasFromStore(Object.values($media_store_filtered));
-  if(geojson && geojson.type === "geojson") {
-    geojson.data.features.push({
-    'id': 0, 
-    'type':'Feature', 
-    'geometry': {
-      'type': 'point',
-      'coordinates': [parseFloat($platform_config_store["Map start longitude"]),parseFloat($platform_config_store["Map start latitude"])],
-    },
-      'properties': {
-      'label': 'test',
-     },
-    });
-    console.log("geojson",geojson)
-  }
+  $: geojson = getDatasFromStore(Object.values($media_store_filtered),[parseFloat($platform_config_store["Map start longitude"]),parseFloat($platform_config_store["Map start latitude"])] );
 
   // State
 	let zoom;
@@ -92,39 +78,39 @@
     <MapSource
       id="pcon"
       type={"geojson"}
-      data={source}
+      data={geojson.data}
     >
       <MapLayer
-            id="points"
-            data={geojson}
-            type="symbol"
-            source="points"
-            filter={["all", ["==","$type","Point"]]}
-            layout= {{
-                'icon-size': '50px',
-                'icon-image': 'custom-marker',
-                //'icon-image': 'circle-15',
-                //'icon-image': ['get', 'icon'],
-                'visibility': 'visible',
-                'icon-ignore-placement': true,
-                'icon-allow-overlap': true,
-                'text-field': ['get', 'label'],
-                'text-offset': [0, 1.25],
-                'text-anchor': 'top'
-            }}
-            hover={true}
-            bind:hovered
-            select={true}
-            bind:selected
-            paint= {{
-              "text-color": "#FF9900",
-              "text-halo-color": "#333333",
-              "text-halo-width": 1,
-            }}
-            visible={true}
+        id="points"
+        data={geojson}
+        type="symbol"
+        source="points"
+        filter={["all", ["==","$type","Point"]]}
+        layout= {{
+          'icon-size': 50,
+          'icon-image': 'custom-marker',
+           //'icon-image': 'circle-15',
+           //'icon-image': ['get', 'icon'],
+           'visibility': 'visible',
+           'icon-ignore-placement': true,
+           'icon-allow-overlap': true,
+          //  'text-field': ['get', 'label'],
+          //  'text-offset': [0, 1.25],
+          //  'text-anchor': 'top'
+        }}
+        hover={true}
+        bind:hovered
+        select={true}
+        bind:selected
+        paint= {{
+          "text-color": "#FF9900",
+          "text-halo-color": "#333333",
+          "text-halo-width": 1,
+        }}
+        visible={true}
         >
           <MapTooltip content={`Code: ${hovered}`}/>
-        </MapLayer>
+      </MapLayer>
     </MapSource>
     </Map>
   {:else}
