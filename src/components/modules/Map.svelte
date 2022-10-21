@@ -87,7 +87,7 @@
         source="points"
         filter={["all", ["==","$type","Point"]]}
         layout= {{
-          'icon-size': 50,
+          'icon-size': 2,
           'icon-image': 'custom-marker',
            //'icon-image': 'circle-15',
            //'icon-image': ['get', 'icon'],
