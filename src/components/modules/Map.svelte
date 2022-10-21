@@ -73,6 +73,7 @@
       maxzoom={20}
       minzoom={8}
       interactive={true}
+      customMarker={true}
     >
     <MapSource
       id="pcon"
@@ -80,26 +81,35 @@
       data={source}
     >
       <MapLayer
-            id="pcon-fill"
+            id="points"
             data={geojson}
             type="symbol"
-            source={icon}
+            source="points"
             filter={["all", ["==","$type","Point"]]}
             layout= {{
-                'icon-image': ['get', 'icon'],
-                'visibility': 'visible'
+                'icon-size': 50,
+                'icon-image': 'custom-marker',
+                //'icon-image': 'circle-15',
+                //'icon-image': ['get', 'icon'],
+                'visibility': 'visible',
+                'icon-ignore-placement': true,
+                'icon-allow-overlap': true,
+                'text-field': ['get', 'label'],
+                'text-offset': [0, 1.25],
+                'text-anchor': 'top'
             }}
             hover={true}
             bind:hovered
             select={true}
             bind:selected
             paint= {{
-              "text-color": "#ffff00",
+              "text-color": "#FF9900",
               "text-halo-color": "#333333",
               "text-halo-width": 1,
             }}
             visible={true}
-        >
+        >"icon-ignore-placement": true,
+        "icon-allow-overlap": true,
           <MapTooltip content={`Code: ${hovered}`}/>
         </MapLayer>
     </MapSource>

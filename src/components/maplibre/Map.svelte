@@ -34,6 +34,7 @@
 	export let bearing = null;
 	export let interactive = true;
 	export let attribution = true;
+	export let customMarker = false;
 
 	let container;
 	let _options = {};
@@ -100,6 +101,11 @@
 			// Prevent map from being tabbable
 			if (!tabbable && document.querySelector(`#${id} canvas`)) {
 				document.querySelector(`#${id} canvas`).tabIndex = "-1";
+			}
+			if (customMarker) {
+				let img = new Image(20,20)
+				img.onload = ()=> map.addImage('custom-marker', img)
+				img.src = "./icons/map-marker.png";
 			}
 
 			dispatch("load", {
