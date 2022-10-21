@@ -16,7 +16,7 @@ export const getDatasFromStore= (store) => {
         "type": "Feature",
         "id": p.id, 
         "geometry": {
-          "type": "Point", 
+          "type": "point", 
           "coordinates": [p.long,p.lat], 
           "properties": {
             "filetype": p["File Type"],
@@ -38,7 +38,7 @@ export const getMapSource = (source) => {
     "data": {
       "type": "FeatureCollection",
       "features": [
-        {"id": 1, "type": "Point", "geometry": [0,0,0] },
+        {"id": 1, "type": "point", "geometry": [0,0,0] },
       ],
     }
   }

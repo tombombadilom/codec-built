@@ -24,6 +24,19 @@
   const source = getMapSource("main");
   let geojson;
   $: geojson = getDatasFromStore(Object.values($media_store_filtered));
+  if(geojson) {
+    geojson.data.features.push({
+    'id': 0, 
+    'type':'Feature', 
+    'geometry': {
+      'type': 'point',
+      'coordinates': [parseFloat($platform_config_store["Map start longitude"]),parseFloat($platform_config_store["Map start latitude"])],
+    },
+      'properties': {
+      'label': 'test',
+     },
+    });
+  }
   console.log("geojson",geojson)
   // State
 	let zoom;
@@ -87,7 +100,7 @@
             source="points"
             filter={["all", ["==","$type","Point"]]}
             layout= {{
-                'icon-size': 50,
+                'icon-size': '50px',
                 'icon-image': 'custom-marker',
                 //'icon-image': 'circle-15',
                 //'icon-image': ['get', 'icon'],
@@ -108,8 +121,7 @@
               "text-halo-width": 1,
             }}
             visible={true}
-        >"icon-ignore-placement": true,
-        "icon-allow-overlap": true,
+        >
           <MapTooltip content={`Code: ${hovered}`}/>
         </MapLayer>
     </MapSource>
