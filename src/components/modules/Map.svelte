@@ -92,7 +92,7 @@
            //'icon-image': 'circle-15',
            //'icon-image': ['get', 'icon'],
            'visibility': 'visible',
-           'icon-ignore-placement': true,
+          //  'icon-ignore-placement': true,
            'icon-allow-overlap': true,
           //  'text-field': ['get', 'label'],
           //  'text-offset': [0, 1.25],
