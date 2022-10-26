@@ -1,5 +1,6 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
+  "types": ["geojson"],
   "compilerOptions": {
     "allowJs": true
   },
