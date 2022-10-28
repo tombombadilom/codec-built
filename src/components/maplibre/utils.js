@@ -1,5 +1,8 @@
 // return geojson feature layer
-export const getDatasFromStore= (store, center) => {
+// store =>  list of media available 
+// center => center of the map [long,lat]
+// type => type of the point symbol or circle
+export const getDatasFromStore= (store, center, type) => {
   if(store && store.length > 0) {
     let points = store.filter((m,i) => (m.long && m.lat));
     let geojson =  {
@@ -23,6 +26,7 @@ export const getDatasFromStore= (store, center) => {
         "type": "Feature",
         "id": i,
         "properties": {
+          // "radius": 5, // if circle
           "filetype": p["File Type"],
           "filename": p["File Name"],
           "contentAnalysis": [p.contentAnalysis],

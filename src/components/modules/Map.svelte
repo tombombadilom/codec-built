@@ -23,7 +23,7 @@
   let data;
   const source = getMapSource("main");
   let geojson;
-  $: geojson = getDatasFromStore(Object.values($media_store_filtered),[parseFloat($platform_config_store["Map start longitude"]),parseFloat($platform_config_store["Map start latitude"])] );
+  $: geojson = getDatasFromStore(Object.values($media_store_filtered),[parseFloat($platform_config_store["Map start longitude"]),parseFloat($platform_config_store["Map start latitude"])], 'circle' );
 
   // State
 	let zoom;
@@ -85,30 +85,32 @@ selected: {#if selected} {selected} <button on:click|preventDefault={() => selec
       <MapLayer
         id="points"
         data={geojson}
-        type="symbol"
+        type={"symbol"}
         source="points"
         onClick={onMarkerClick}
         filter={["all", ["==","$type","Point"]]}
         layout= {{
-          'icon-size': 2,
-          'icon-image': 'custom-marker',
-           //'icon-image': 'circle-15',
-           //'icon-image': ['get', 'icon'],
+          'icon-size': 1.8, //icon only
+          'icon-image': 'custom-marker', //icon only
+           //'icon-image': 'circle-15', //icon only
+           //'icon-image': ['get', 'icon'], //icon only
            'visibility': 'visible',
-          //  'icon-ignore-placement': true,
-          'icon-allow-overlap': true,
-          //'text-field': ['get', 'label'],
-          //'text-offset': [0, 1.25],
-          //'text-anchor': 'top'
+          //  'icon-ignore-placement': true, //icon only
+          //'icon-allow-overlap': true, //icon only
+          //'text-field': ['get', 'label'], //icon only
+          //'text-offset': [0, 1.25], //icon only
+          //'text-anchor': 'top'  //icon only
         }}
         hover={true}
         bind:hovered
         select={true}
         bind:selected
         paint= {{
-          "text-color": "#FF9900",
-          "text-halo-color": "#333333",
-          "text-halo-width": 1,
+          //'circle-radius': 2, // circle only
+          //'circle-color':  '#e55e5e', // circle only
+          "text-color": "#FF9900", //icon only
+          "text-halo-color": "#333333", //icon only
+          "text-halo-width": 1, //icon only
         }}
         visible={true}
         >
