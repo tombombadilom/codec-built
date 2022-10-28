@@ -2,6 +2,7 @@
 	--grey1: #1E1E1E;
 	--grey2: #41484E;
 	--grey3: #2C2C2C;
+	--light: #FFF;
 	--font-size: 14px;
 	--fontsmall-size: 11px;
 	--grey4blue: #1F262B;
@@ -156,12 +157,12 @@ button:focus {
 }
 .mapboxgl-popup-content, .maplibregl-popup-content {
 	display: flexbox;
-	background: #000 !important;
-	color: #FF9900;
+	background: var(--grey1) !important;
+	color: var(--light);
 	box-shadow: 2em 1em 0.5em 0em rgba(0,0,0,0.75);
 	-webkit-box-shadow: 2em 1em 0.5em 0em rgba(0,0,0,0.75);
 	-moz-box-shadow: 2em 1em 0.5em 0em rgba(0,0,0,0.75);
-	border-radius: 2rem;
-	-webkit-border-radius: 2rem;
+	border-radius: 25em;
+	-webkit-border-radius: 25em;
 	-moz-border-radius: 2rem;
 }
