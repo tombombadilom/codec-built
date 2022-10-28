@@ -222,6 +222,7 @@
 					{ hovered: true }
 				);
 				map.setLayoutProperty(id, 'icon-size', 3);
+				//map.setLayoutProperty(id, 'icon-image', 'map-marker6');
 				// Change the cursor style as a UI indicator.
 				map.getCanvas().style.cursor = 'pointer';
 				var coordinates = e.features[0].geometry.coordinates.slice();
@@ -258,6 +259,8 @@
 			// Reset cursor and remove popup
 			map.getCanvas().style.cursor = '';
 			popup.remove();
+			map.setLayoutProperty(id, 'icon-size', 1.8);
+			//map.setLayoutProperty(id, 'icon-image', 'map-marker4');
     });
 	}
 	
