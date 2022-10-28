@@ -87,11 +87,12 @@ selected: {#if selected} {selected} <button on:click|preventDefault={() => selec
         data={geojson}
         type={"symbol"}
         source="points"
+        icon={"custom-marker"}
         onClick={onMarkerClick}
         filter={["all", ["==","$type","Point"]]}
         layout= {{
           'icon-size': 1.8, //icon only
-          'icon-image': 'custom-marker', //icon only
+          'icon-image': 'custom-marker2', //icon only
            //'icon-image': 'circle-15', //icon only
            //'icon-image': ['get', 'icon'], //icon only
            'visibility': 'visible',

@@ -221,7 +221,7 @@
 					},
 					{ hovered: true }
 				);
-
+				map.setLayoutProperty(id, 'icon-size', visible ? 1.8 : 3);
 				// Change the cursor style as a UI indicator.
 				map.getCanvas().style.cursor = 'pointer';
 				var coordinates = e.features[0].geometry.coordinates.slice();
@@ -232,11 +232,9 @@
 				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
 					coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 				}
-				console.log('layer popup', e.features[0].properties);
-				let myString = '<div bind:this={layer} {id} class="popup"><h3 class="items">'+properties.label+'</h3><div class="items">UAR: '+properties.id+'</div><div class="items">File type: '+properties.filetype+'</div><div class="items">File name: '+properties.filename+'</div><div class="items">content Analisys: '+JSON.stringify(properties.contentAnalisys)+'</div></div>';
-				console.log(myString);
+				let markerPopup = '<div bind:this={layer} {id} class="popup"><h3 class="items">'+properties.label+'</h3><div class="items">UAR: '+properties.id+'</div><div class="items">File type: '+properties.filetype+'</div><div class="items">File name: '+properties.filename+'</div><div class="items">content Analisys: '+JSON.stringify(properties.contentAnalisys)+'</div></div>';
 				popup.setLngLat(coordinates)
-				.setHTML(myString)
+				.setHTML(markerPopup)
 				.addTo(map);
 			}
 		});

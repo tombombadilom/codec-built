@@ -105,6 +105,21 @@
 				let img = new Image(20,20)
 				img.onload = ()=> map.addImage('custom-marker', img)
 				img.src = "/icons/map-marker.png";
+				let img2 = new Image(20,20)
+				img2.onload = ()=> map.addImage('custom-marker2', img2)
+				img2.src = "/icons/map-marker2.png";
+				let img3 = new Image(20,20)
+				img3.onload = ()=> map.addImage('custom-marker3', img3)
+				img3.src = "/icons/map-marker3.png";
+				let img4 = new Image(20,20)
+				img4.onload = ()=> map.addImage('custom-marker4', img4)
+				img4.src = "/icons/map-marker4.png";
+				let img5 = new Image(20,20)
+				img5.onload = ()=> map.addImage('custom-marker5', img5)
+				img5.src = "/icons/map-marker5.png";
+				let img6 = new Image(20,20)
+				img6.onload = ()=> map.addImage('custom-marker6', img6)
+				img6.src = "/icons/map-marker6.png";
 			}
 
 			dispatch("load", {
