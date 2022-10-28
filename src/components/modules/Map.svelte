@@ -121,57 +121,6 @@ selected: {#if selected} {selected} <button on:click|preventDefault={() => selec
   {/if}
 
 </div>
-<!-- <span class="map_container" use:watchResize={handleResize}>
-  {#if $platform_config_store["Map start latitude"] !== undefined}
-    <Map
-      bind:this={mapComponent}
-      accessToken={MAPBOX_ACCESS_TOKEN}
-      options={{
-        style: "mapbox://styles/serugeneris/cl7w3eow0000214mje9oxdegh",
-        center: [
-          parseFloat($platform_config_store["Map start longitude"]),
-          parseFloat($platform_config_store["Map start latitude"]),
-        ],
-        doubleClickZoom: false,
-      }}
-      zoom={parseFloat($platform_config_store["Map start zoom"])}
-    >
-      <style>
-        a.mapboxgl-ctrl-logo,
-        #map
-          > div.mapboxgl-control-container
-          > div.mapboxgl-ctrl-bottom-right
-          > div {
-          visibility: hidden;
-        }
-      </style>
-      <NavigationControl />
-      <ScaleControl /> -->
-      <!-- {#each Object.values($media_store_filtered) as medium} -->
-      <!-- {#each Object.values($media_store_filtered).filter((video) => video.lat !== undefined) as medium}
-        <span>
-          <Marker lat={medium.lat} lng={medium.long} popup={false}>
-            <div
-              on:click={onMarkerClick}
-              on:mouseover={onMarkerOver}
-              on:mouseout={onMarkerOut}
-              data-UAR={medium.UAR}
-              style="
-                              font-size:{$ui_store.media_hovered.includes(
-                medium.UAR
-              ) || $ui_store.media_in_view.includes(medium.UAR)
-                ? '60px'
-                : '30px'};
-                              color:red"
-            >
-              {$ui_store.media_in_view.includes(medium.UAR) ? "•" : "◦"}
-            </div>
-          </Marker>
-        </span>
-      {/each}
-    </Map>
-  {/if}
-</span> -->
 
 <style>
   :global(.mapboxgl-marker) {

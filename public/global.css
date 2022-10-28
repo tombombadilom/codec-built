@@ -154,3 +154,14 @@ button:focus {
 	padding: 20px;
 	width: 80%;
 }
+.mapboxgl-popup-content, .maplibregl-popup-content {
+	display: flexbox;
+	background: #000 !important;
+	color: #FF9900;
+	box-shadow: 2em 1em 0.5em 0em rgba(0,0,0,0.75);
+	-webkit-box-shadow: 2em 1em 0.5em 0em rgba(0,0,0,0.75);
+	-moz-box-shadow: 2em 1em 0.5em 0em rgba(0,0,0,0.75);
+	border-radius: 2rem;
+	-webkit-border-radius: 2rem;
+	-moz-border-radius: 2rem;
+}

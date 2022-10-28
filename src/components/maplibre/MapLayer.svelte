@@ -2,6 +2,7 @@
 	import { getContext, setContext, createEventDispatcher, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
 	import maplibre from "maplibre-gl";
+
 	const dispatch = createEventDispatcher();
 	
 	export let id;
@@ -86,39 +87,6 @@
 	}
 
 	map.addLayer(options, order);
-
-	// // Updates "color" feature states for all geo codes in data array
-	// // Assumes that each data point has the colours defined on the colorCode key
-	// export function updateColors(data, cKey = colorKey) {
-	// 	console.log('updating colors...');
-
-	// 	if (nameKey || valueKey) {
-	// 		for (const d of data) {
-	// 			map.setFeatureState({
-	// 				source: source,
-	// 				sourceLayer: sourceLayer,
-	// 				id: d[idKey]
-	// 			}, {
-	// 				color: cKey ? d[cKey] : null,
-	// 				name: nameKey ? d[nameKey] : null,
-	// 				value: valueKey ? d[valueKey] : null
-	// 			});
-	// 		}
-	// 	} else {
-	// 		for (const d of data) {
-	// 			map.setFeatureState({
-	// 				source: source,
-	// 				sourceLayer: sourceLayer,
-	// 				id: d[idKey]
-	// 			}, {
-	// 				color: d[cKey]
-	// 			});
-	// 		}
-	// 	}
-		
-	// }
-
-	// $: data && updateColors(data, colorKey);
 
 	// Function to update layer filter
 	function setFilter(filter) {
@@ -257,19 +225,20 @@
 				// Change the cursor style as a UI indicator.
 				map.getCanvas().style.cursor = 'pointer';
 				var coordinates = e.features[0].geometry.coordinates.slice();
-				var description = e.features[0].properties.label;
-				
+				let properties = e.features[0].properties;
 				// Ensure that if the map is zoomed out such that multiple
 				// copies of the feature are visible, the popup appears
 				// over the copy being pointed to.
 				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
 					coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
 				}
+				console.log('layer popup', e.features[0].properties);
+				let myString = '<div bind:this={layer} {id} class="popup"><h3 class="items">'+properties.label+'</h3><div class="items">UAR: '+properties.id+'</div><div class="items">File type: '+properties.filetype+'</div><div class="items">File name: '+properties.filename+'</div><div class="items">content Analisys: '+JSON.stringify(properties.contentAnalisys)+'</div></div>';
+				console.log(myString);
 				popup.setLngLat(coordinates)
-				.setHTML(description)
+				.setHTML(myString)
 				.addTo(map);
 			}
-			
 		});
 		
 		map.on('mouseleave', id, (e) => {
@@ -316,5 +285,22 @@
 		if (map && map.getLayer(id)) map.removeLayer(id);
 	});
 </script>
+
+<style>
+
+	.popup {
+		
+		display: flex;
+	   	min-width: 5rem;
+	   	min-height: 2rem;
+		flex-direction: row;
+		align-items: left;
+		justify-content: top;
+	}
+	.items {
+		width: 100%;
+		display: flex;
+	}
+</style>
 
 <slot {hovered}></slot>
