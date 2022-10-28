@@ -48,6 +48,8 @@
     } else {
       $ui_store.media_in_view = [...$ui_store.media_in_view, UAR];
     }
+    // reload map screen
+    return mapComponent.resize();
   }
   // function onMarkerOver(event) {
   //   let UAR = event.target.dataset.uar; //automatically lowercased
@@ -64,7 +66,7 @@
 (hovered: {hovered ? hovered : ''},
 selected: {#if selected} {selected} <button on:click|preventDefault={() => selected = null}>x</button>{/if})
 <!-- svelte-ignore missing-declaration -->
-<div class="map_container" use:watchResize={handleResize}>
+<div id={mapComponent} class="map_container" use:watchResize={handleResize}>
   {#if $platform_config_store["Map start latitude"] !== undefined && geojson && geojson.data }
     <Map
       id="mapId" 

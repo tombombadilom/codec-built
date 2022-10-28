@@ -221,7 +221,7 @@
 					},
 					{ hovered: true }
 				);
-				map.setLayoutProperty(id, 'icon-size', visible ? 1.8 : 3);
+				map.setLayoutProperty(id, 'icon-size', 3);
 				// Change the cursor style as a UI indicator.
 				map.getCanvas().style.cursor = 'pointer';
 				var coordinates = e.features[0].geometry.coordinates.slice();
