@@ -12,28 +12,29 @@ export const getDatasFromStore= (store, center) => {
             'name': 'EPSG:3857',
           },
         },
+        "cluster": true,
+        "clusterRadius": 20, // cluster two trailheads if less than 20 pixels apart
+        "clusterMaxZoom": 14, //
         "features" : []
       },
     };
-    console.log('points', points);
     geojson.data.features  = points.map((p,i) => (
       {
         "type": "Feature",
-        "id": p.id, 
+        "id": i,
+        "properties": {
+          "filetype": p["File Type"],
+          "filename": p["File Name"],
+          "contentAnalysis": [p.contentAnalysis],
+          "label":p.label,
+          "id": p.id
+        },
         "geometry": {
           "type": "Point", 
           "coordinates": [p.long,p.lat], 
-          "properties": {
-            "filetype": p["File Type"],
-            "filename": p["File Name"],
-            "contentAnalysis": p.contentAnalysis,
-            "label":p.label,
-            "id": p.id
-          } 
         }
       }
     )); 
-    console.log('geojson', geojson);
     return geojson;
   }
 }

@@ -1,7 +1,7 @@
 <script>
 	import { getContext, setContext, createEventDispatcher, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
-
+	import maplibre from "maplibre-gl";
 	const dispatch = createEventDispatcher();
 	
 	export let id;
@@ -10,6 +10,7 @@
 	export let layout = {};
 	export let paint = {};
 	export let data = null;
+	export let onClick = null;
 	export let colorKey = "color";
 	export let nameKey = null;
 	export let valueKey = null;
@@ -28,9 +29,11 @@
 	export let minzoom = null;
 	export let sourceLayer = null;
 	export let visible = true;
+
 	const { source, layer, promoteId } = getContext('source');
 	const { getMap } = getContext('map');
 	const map = getMap();
+
 
 	setContext("layer", {
 		layer: id
@@ -44,7 +47,7 @@
 	setContext("hover", hoverObj);
 
 	function sleep (ms = 1000) {
-  	return new Promise((resolve) => setTimeout(resolve, ms));
+  		return new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
 	idKey = idKey ? idKey : promoteId;
@@ -79,42 +82,43 @@
 	}
 	
 	if (map.getLayer(id)) {
-    map.removeLayer(id);
+    	map.removeLayer(id);
 	}
+
 	map.addLayer(options, order);
 
-	// Updates "color" feature states for all geo codes in data array
-	// Assumes that each data point has the colours defined on the colorCode key
-	export function updateColors(data, cKey = colorKey) {
-		console.log('updating colors...');
+	// // Updates "color" feature states for all geo codes in data array
+	// // Assumes that each data point has the colours defined on the colorCode key
+	// export function updateColors(data, cKey = colorKey) {
+	// 	console.log('updating colors...');
 
-		if (nameKey || valueKey) {
-			for (const d of data) {
-				map.setFeatureState({
-					source: source,
-					sourceLayer: sourceLayer,
-					id: d[idKey]
-				}, {
-					color: cKey ? d[cKey] : null,
-					name: nameKey ? d[nameKey] : null,
-					value: valueKey ? d[valueKey] : null
-				});
-			}
-		} else {
-			for (const d of data) {
-				map.setFeatureState({
-					source: source,
-					sourceLayer: sourceLayer,
-					id: d[idKey]
-				}, {
-					color: d[cKey]
-				});
-			}
-		}
+	// 	if (nameKey || valueKey) {
+	// 		for (const d of data) {
+	// 			map.setFeatureState({
+	// 				source: source,
+	// 				sourceLayer: sourceLayer,
+	// 				id: d[idKey]
+	// 			}, {
+	// 				color: cKey ? d[cKey] : null,
+	// 				name: nameKey ? d[nameKey] : null,
+	// 				value: valueKey ? d[valueKey] : null
+	// 			});
+	// 		}
+	// 	} else {
+	// 		for (const d of data) {
+	// 			map.setFeatureState({
+	// 				source: source,
+	// 				sourceLayer: sourceLayer,
+	// 				id: d[idKey]
+	// 			}, {
+	// 				color: d[cKey]
+	// 			});
+	// 		}
+	// 	}
 		
-	}
+	// }
 
-	$: data && updateColors(data, colorKey);
+	// $: data && updateColors(data, colorKey);
 
 	// Function to update layer filter
 	function setFilter(filter) {
@@ -162,30 +166,33 @@
 			}
 		}
 	}
-	
+	// Create a popup, but don't add it to the map yet.
+	var popup = new maplibre.Popup({
+		closeButton: false,
+		closeOnClick: false
+	});
 	// Adds a click event to change the selected geo code (if select = true for map layer)
 	if (select) {
 		map.on('click', id, (e) => {
-      if (e.features.length > 0 && !clickIgnore) {
+			if (e.features.length > 0 && !clickIgnore) {
 				let feature = e.features[0];
 				selected = feature.id;
-
 				dispatch('select', {
 					id: selected,
 					feature: feature,
 					event: e
 				});
-				
+						
 				if (selectedPrev) {
 					map.setFeatureState(
-            { source: source, sourceLayer: sourceLayer, id: selectedPrev },
-            { selected: false }
-          );
+						{ source: source, sourceLayer: sourceLayer, id: selectedPrev },
+						{ selected: false }
+					);
 				}
-				
+						
 				map.setFeatureState(
-          { source: source, sourceLayer: sourceLayer, id: selected },
-          { selected: true }
+					{ source: source, sourceLayer: sourceLayer, id: selected },
+					{ selected: true }
 				);
 
 				if (clickCenter) {
@@ -193,11 +200,12 @@
 					map.flyTo({
 						center: center.geometry.coordinates
 					});
-				}
-				
+				}				
 				selectedPrev = selected;
+				map.getCanvas().style.cursor = 'pointer';
+				return onClick(feature.properties);
 			}
-    });
+    	});
 	}
 	
 	// Updates the selected geo code if it is changed elsewhere in the app (outside of this component)
@@ -216,45 +224,61 @@
 		}
 		selectedPrev = selected;
 	}
-	
+
 	// Adds an event to update the hovered geo code when the mouse is moved over the map
 	if (hover) {
 		map.on('mousemove', id, (e) => {
-      if (e.features.length > 0) {
+			if (e.features.length > 0) {
 				if (hovered) {
-          map.setFeatureState(
-            { source: source, sourceLayer: sourceLayer, id: hovered },
-            { hovered: false }
-          );
-        }
+					map.setFeatureState(
+						{ source: source, sourceLayer: sourceLayer, id: hovered, sourceProperties: {name: "toto"} },
+						{ hovered: false }
+					);
+				}
 				let feature = e.features[0];
+				// console.log('feature', feature);
 				hovered = hoveredPrev = feature.id;
-
 				hoverObj.set({
 					id: hovered,
 					feature: feature,
 					event: e
 				});
-
+			
 				dispatch('hover', $hoverObj);
+				// console.log('hover', $hoverObj);
+				map.setFeatureState(
+					{ source: source, 
+						sourceLayer: sourceLayer, 
+						id: hovered 
+					},
+					{ hovered: true }
+				);
 
-        map.setFeatureState(
-          { source: source, sourceLayer: sourceLayer, id: hovered },
-          { hovered: true }
-        );
-
-        // Change the cursor style as a UI indicator.
+				// Change the cursor style as a UI indicator.
 				map.getCanvas().style.cursor = 'pointer';
-      }
+				var coordinates = e.features[0].geometry.coordinates.slice();
+				var description = e.features[0].properties.label;
+				
+				// Ensure that if the map is zoomed out such that multiple
+				// copies of the feature are visible, the popup appears
+				// over the copy being pointed to.
+				while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+					coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+				}
+				popup.setLngLat(coordinates)
+				.setHTML(description)
+				.addTo(map);
+			}
+			
 		});
 		
 		map.on('mouseleave', id, (e) => {
 			if (hovered) {
-        map.setFeatureState(
-          { source: source, sourceLayer: sourceLayer, id: hovered },
-          { hovered: false }
+				map.setFeatureState(
+					{ source: source, sourceLayer: sourceLayer, id: hovered },
+					{ hovered: false }
 				);
-      }
+			}
 			hovered = hoveredPrev = null;
 
 			hoverObj.set({
@@ -264,9 +288,9 @@
 			});
 
 			dispatch('hover', $hoverObj);
-			
 			// Reset cursor and remove popup
 			map.getCanvas().style.cursor = '';
+			popup.remove();
     });
 	}
 	
@@ -275,13 +299,14 @@
 		if (hoveredPrev) {
 			map.setFeatureState(
 				{ source: source, sourceLayer: sourceLayer, id: hoveredPrev },
-        { hovered: false }
+        		{ hovered: false }
 			);
 		}
 		if (hovered) {
+			
 			map.setFeatureState(
 				{ source: source, sourceLayer: sourceLayer, id: hovered },
-        { hovered: true }
+        		{ hovered: true }
 			);
 		}
 		hoveredPrev = hovered;

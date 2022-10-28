@@ -40,7 +40,7 @@
   }, 500);
 
   function onMarkerClick(event) {
-    let UAR = event.target.dataset.uar; //automatically lowercased
+    let UAR = event.id; //automatically lowercased
     if ($ui_store.media_in_view.includes(UAR)) {
       $ui_store.media_in_view = $ui_store.media_in_view.filter(
         (exist_UAR) => exist_UAR !== UAR
@@ -49,18 +49,20 @@
       $ui_store.media_in_view = [...$ui_store.media_in_view, UAR];
     }
   }
-  function onMarkerOver(event) {
-    let UAR = event.target.dataset.uar; //automatically lowercased
-    $ui_store.media_hovered = [...$ui_store.media_hovered, UAR];
-  }
-  function onMarkerOut(event) {
-    let UAR = event.target.dataset.uar; //automatically lowercased
-    $ui_store.media_hovered = $ui_store.media_hovered.filter(
-      (exist_UAR) => exist_UAR !== UAR
-    );
-  }
+  // function onMarkerOver(event) {
+  //   let UAR = event.target.dataset.uar; //automatically lowercased
+  //   $ui_store.media_hovered = [...$ui_store.media_hovered, UAR];
+  // }
+  // function onMarkerOut(event) {
+  //   let UAR = event.target.dataset.uar; //automatically lowercased
+  //   $ui_store.media_hovered = $ui_store.media_hovered.filter(
+  //     (exist_UAR) => exist_UAR !== UAR
+  //   );
+  // }
+  
 </script>
-
+(hovered: {hovered ? hovered : ''},
+selected: {#if selected} {selected} <button on:click|preventDefault={() => selected = null}>x</button>{/if})
 <!-- svelte-ignore missing-declaration -->
 <div class="map_container" use:watchResize={handleResize}>
   {#if $platform_config_store["Map start latitude"] !== undefined && geojson && geojson.data }
@@ -85,6 +87,7 @@
         data={geojson}
         type="symbol"
         source="points"
+        onClick={onMarkerClick}
         filter={["all", ["==","$type","Point"]]}
         layout= {{
           'icon-size': 2,
@@ -93,10 +96,10 @@
            //'icon-image': ['get', 'icon'],
            'visibility': 'visible',
           //  'icon-ignore-placement': true,
-           'icon-allow-overlap': true,
-          //  'text-field': ['get', 'label'],
-          //  'text-offset': [0, 1.25],
-          //  'text-anchor': 'top'
+          'icon-allow-overlap': true,
+          //'text-field': ['get', 'label'],
+          //'text-offset': [0, 1.25],
+          //'text-anchor': 'top'
         }}
         hover={true}
         bind:hovered
@@ -109,7 +112,7 @@
         }}
         visible={true}
         >
-          <MapTooltip content={`Code: ${hovered}`}/>
+
       </MapLayer>
     </MapSource>
     </Map>

@@ -10,10 +10,14 @@
 	});
 
   const { getMap } = getContext('map');
+  console.log('getMap', getMap);
 	const map = getMap();
   const hoverObj = getContext('hover');
+  
+  console.log('hoverObj', hoverObj);
 
   function updateTooltip(obj, content) {
+    console.log("toto");
     if (obj.id) {
       tooltip
 			.setLngLat(obj.event.lngLat)
