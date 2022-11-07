@@ -7,7 +7,7 @@
 	import MapTooltip from '../maplibre/MapTooltip.svelte';
   // import Marker from '../maplibre/Marker.svelte';
 
-  import { getDatasFromStore, getMapSource } from '../maplibre/utils';
+  import { getDatasFromStore } from '../maplibre/utils';
   import { throttle } from "underscore";
   import { watchResize } from "svelte-watch-resize";
   import {
@@ -21,7 +21,7 @@
 
   // Data
   let data;
-  const source = getMapSource("main");
+
   let geojson;
   $: geojson = getDatasFromStore(Object.values($media_store_filtered),[parseFloat($platform_config_store["Map start longitude"]),parseFloat($platform_config_store["Map start latitude"])], 'circle' );
 
